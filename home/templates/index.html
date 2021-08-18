@@ -76,7 +76,7 @@
                             {%endif%}
                         </button>
                         {% else %}
-                        <li><a href="{% url 'newMessage' unit.writer unit.title%}" onclick="authMessage()" > 쪽지보내기</a></li>
+                        <li><a href='#' onclick="authMessage()" > 쪽지보내기</a></li>
                         <button id="{{unit.id}}" onclick="alert('로그인이 필요합니다')">
                             <img class="heart" id="heart" src="{% static '빈하트.png' %}" alt="empty_heart">
                         </button>
