@@ -33,39 +33,42 @@ def logout_view(request):
 
 def register_view(request):
     if request.method =="POST":
-        form = SignUpForm(request.POST)
+        form = SignUpForm(request.POST,request.FILES)
         if form.is_valid():
-            user = form.save()#얘는 commit없음
+            user=form.save(commit=False)#얘는 commit없음
+            #user.profileImage = request.FILES['profileImage']
+            user.save()
         return  redirect('index')
     else:
         form = SignUpForm()
         return render(request,'signUp.html',{'form':form})
 
 
-    
+'''
 def mypage(request):
     posts=Post.objects.filter( writer = request.user).order_by('-id')
    
     #posts=Blog.objects.all().order_by('-id')
     return render(request,'mypage.html',{'posts':posts})
-    
+    ''' 
 
 
-def editMypage(request):
+def editMypage(request,goTo):
 
     if request.method == "POST":
     	# updating
-        user_change_form = SomUserChangeForm(data=request.POST, instance=request.user)
+        user_change_form = SomUserChangeForm(request.POST,request.FILES, instance=request.user)
         
         if user_change_form.is_valid() :
-            user = user_change_form.save()
-            return render(request,'mypage.html')
+            user=user_change_form.save()
+            return redirect("userPage",goTo)
     else:
         # editting
         user_change_form = SomUserChangeForm(instance=request.user)
 
         context = {
             'user_change_form': user_change_form,
+            'goTo':goTo,
         }
         
         return render(request, 'editMypage.html', context)

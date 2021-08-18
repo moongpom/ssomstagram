@@ -33,6 +33,13 @@
             margin: auto;
             width:800px;
         }
+        #profileImage{
+            border-radius: 100%;
+            border: 1.5px solid brown;
+        }
+        .profile{
+            float: left;
+        }
     </style>
      <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
      <script>
@@ -61,8 +68,15 @@
     <div id="unit">
             <h2>내 정보</h2>
             <div class="container">
-            이름| {{user.username}}<br>
-            자기소개 | {{user.introduce}}<br><br>
+                <div class="profile">
+                {% if user.profileImage %}
+                    <img id="profileImage"  src={{user.profileImage.url}} alt='image' height="100px" width="100px">
+                {% else%}
+                    <img id="profileImage" src= "{%static '솜솜.jpg'%}" alt='image' height="100px" width="100px"></a>
+                {% endif %}<br>
+                </div>
+            이름 | {{user.username}}<br>
+            소개 | {{user.introduce}}<br><br>
             
             </div>  
             <a class="toNext" href="{% url 'editMypage' %}">회원정보수정하기</a><br><br>

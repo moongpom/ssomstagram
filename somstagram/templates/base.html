@@ -131,28 +131,12 @@
 <body>
     {% load static %}
     <br><br>
-    <div class="hi">
-      {% if user.is_authenticated %}
-        {% if user.is_staff %}
-            <strong>{{user.username}}</strong> 관리자 계정입니다.
-            <br><a href=" {% url 'mypage'%}"> 마이페이지 </a>|
-        {% else %}
-            <strong>{{user.username}}</strong>님 안녕하세요!
-            <br>
-            <a href=" {% url 'mypage'%}"> 마이페이지 </a>|
-        {%endif%} 
-        {%endif%}
-      {% if user.is_authenticated %}
-      <a href="{% url 'logout'%}">로그아웃</a> 
-       {% else %}
-        <a href=" {% url 'login'%}"> 로그인</a>  
-         {%endif%}
+     
+     
 
-    </div>
     
       <a href="{% url 'index' %}">
-        <img class="logo_image" src="{% static 'logo1.png' %}" alt="Koala logo" width="200" >
-        <!--<logo>코알라</logo>-->
+       <h1>SOMSTAGRAM</h1>
       </a><br><br><br>
    
       <div id="nav">
@@ -161,14 +145,14 @@
                 <a href="{% url 'newPost' %}">글 작성하기</a>
                 {% else %}
                 
-                <a href="{% url 'newPost' %}" onclick="authPost()">글 작성하기</a>
+                <a href="#" onclick="authPost()">글 작성하기</a>
                 {%endif%}
               </li>
               <li>
                 {% if user.is_authenticated %}
                 <a href="{% url 'messageBox' %}">쪽지함</a>
                 {% else %}
-                <a href="{% url 'messageBox' %}" onclick="authMessage()">쪽지함</a>
+                <a href="#" onclick="authMessage()">쪽지함</a>
                 {%endif%}
                 <script>
                   function authMessage(){
@@ -177,9 +161,32 @@
                   function authPost(){
                        alert("글쓰기는 로그인 하신 뒤 이용가능한 서비스 입니다");
                   }
+                  function auth(){
+                       alert("로그인하세요");
+                  }
                   </script>
-               
               </li>
+              <li>  
+                {% if user.is_authenticated %}
+                    <a href="{% url 'userPage' user.username %}" > 마이페이지 </a>
+                   
+                {% else %}
+                    <a href="#" onclick="auth()">마이페이지</a>
+                    
+                {%endif%}</li>
+              <li> {% if user.is_authenticated %}
+                <a href="{% url 'logout'%}">로그아웃</a> 
+                 {% else %}
+                  <a href=" {% url 'login'%}"> 로그인</a>  
+                   {%endif%}</li>
+                  <li> {% if user.is_authenticated %}
+                    {% if user.is_staff %}
+                        <strong>{{user.username}}</strong> 관리자 계정입니다.
+                    {% else %}
+                        <strong>{{user.username}}</strong>님 안녕하세요!
+                        <br>
+                    {%endif%} 
+                    {%endif%}</li>
           </ul>
       </div>
    

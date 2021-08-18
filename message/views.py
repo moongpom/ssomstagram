@@ -5,6 +5,7 @@ from .forms import *
 from django.utils import timezone
 from django.db.models import Q
 from django.core.paginator import Paginator
+from django.contrib.auth import get_user_model
 # Create your views here.
 def detailMessage(request, messageId): 
     message = get_object_or_404(Message, pk = messageId) 
@@ -14,12 +15,13 @@ def detailMessage(request, messageId):
 
 def messageBox(request):#메세지함
     messages=Message.objects.filter( to = request.user).order_by('-id')|Message.objects.filter(   writer = request.user).order_by('-id')
+    userinfo =get_user_model().objects.all()
     paginator = Paginator(messages, 10)
     page = request.GET.get('page')
     message = paginator.get_page(page)
-    return render(request,"messageBox.html",{'message':message})
+    return render(request,"messageBox.html",{'message':message,'userinfo':userinfo})
 
-def newMessage(request,to,title):
+def newMessage(request,to):
     if request.method == 'POST':
         form = MessageForm(request.POST, request.FILES)
         if form.is_valid():
@@ -28,11 +30,11 @@ def newMessage(request,to,title):
             message.writer = request.user
             message.pub_date = timezone.now() 
             message.save()
-            return redirect("detailMessage",message.id,)
+            return redirect("detailMessage",message.id)
     else:
         form = MessageForm()
         print(to)
-        return render(request, 'newMessage.html', {'form':form,'to':to,'title':title})
+        return render(request, 'newMessage.html', {'form':form,'to':to})
 def replyMessage(request, messageId):
     if request.method == 'POST':
         form = ReplyForm(request.POST)

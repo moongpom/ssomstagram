@@ -8,6 +8,46 @@
             margin-left: 700px;
             border: 1px solid black;
         }
+        .heart{
+            width:40px;
+        }
+        .thumb{
+            float: left;
+            clear: both;
+            background-color: white;
+        }
+        #content{
+            height: 340px;
+            width: 840px;
+            margin: auto;
+            margin-bottom: 50px;
+            background-color: white;
+            word-break: break-all;
+            overflow-y: scroll;
+            overflow-x: hidden;
+            padding: 20px;
+        }
+        #profileImage{
+            border-radius: 100%;
+            border: 1.5px solid brown;
+            width:40px;
+            height: 40px;
+        }
+        .goToWriter a{
+            font-size: 20px;
+            font-weight: 900;
+        }
+        .goToWriter{
+            /*text-align: left;
+            position: relative;
+            left:50px;*/
+            
+        }
+        .profile{
+            background-color: rgb(223, 184, 192);
+            padding-top: 10px;
+            padding-bottom: 10px;
+        }
     </style>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
@@ -49,54 +89,88 @@
         })
     }
 
-</script>
+</script><br><br>
     <div class="newPost_list">
-        <h5 class="title">🔔 새로 올라온 글 🔔</h5>
+        <h5 class="title">피드</h5>
         <hr>
         {% for unit in postList %}
             <div id="content">  
                
                     {% if unit.image %}
-                        <img src={{unit.image.url}} alt='image' height="300px" width="300px">
+                        <img class="thumb" src={{unit.image.url}} alt='image' height="300px" width="300px">
                          
                     {% endif %}<br>
-                    제목: {{unit.title}}... |
-                    글내용: {{unit.summary}}... |
-                    <small>{{unit.pub_date}} </small>
-                    <button id="toggle">작성자 : {{unit.writer}}</button> 
-                    {% if user.is_authenticated %}
-                        <button id="{{unit.id}}" onclick="post_like(this.id)">
-                        {%if request.user in unit.like.all%}
-                        <img class="heart" id="heart{{unit.id}}" src="{% static '빨간하트.png' %}" alt="full_heart">
-                        {%else%}
-                        <img class="heart" id="heart{{unit.id}}" src="{% static '빈하트.png' %}" alt="empty_heart">
-                        {%endif%}
-                    {%else%}
-                    <button id="{{unit.id}}" onclick="alert('로그인이 필요합니다')">
-                        <img class="heart" id="heart" src="{% static '빈하트.png' %}" alt="empty_heart">
-                    </button>
+                    <div class="right">
+                        <span class="goToWriter">
+                            {% if user == unit.writer %}
+                            <a class="toNext" href="{% url 'deletePost' unit.id%}" onclick="return deletePost()">삭제하기</a>
+                            {% elif user.is_staff%}
+                            <a class="toNext" href="{% url 'deletePost' unit.id%}" onclick="return deletePost()">삭제하기</a>
+                            {%endif%}
+                            {% for units in userinfo %}
+                                {% if units.username == unit.writer%}
+                                    <div class="profile">
+                                            <a href="{% url 'userPage' unit.writer %}" >
+                                                {% if units.profileImage %}
+                                                      <img id="profileImage"  src={{units.profileImage.url}} alt='image' height="100px" width="100px">
+                                                {% else%}
+                                                     <img id="profileImage" src= "{%static '솜솜.jpg'%}" alt='image' height="100px" width="100px"></a>
+                                                {% endif %}
+                                            {%endif%}
+                            {% endfor %}
+                                            {{unit.writer}}</a>  
+                                            </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
-                    {%endif%}
-                    <span id="like_count{{unit.id}}">{{unit.like.count}}</span>
-                    </button>
-                    <ul id="userSub">
-                        {% if user.is_authenticated %}
-                        <li><a href="{% url 'newMessage' unit.writer unit.title%}" > 쪽지보내기</a></li>
+                                            <span class="dateheart">
+                                                <small>{{unit.pub_date}} </small>
+                                                &nbsp;
+                                                {% if user.is_authenticated %}
+                                                    <span id="{{unit.id}}" onclick="post_like(this.id)">
+                                                            {%if request.user in unit.like.all%}
+                                                                <img class="heart" id="heart{{unit.id}}" src="{% static '빨간하트.png' %}" alt="full_heart">
+                                                            {%else%}
+                                                                <img class="heart" id="heart{{unit.id}}" src="{% static '빈하트.png' %}" alt="empty_heart">
+                                                            {%endif%}
+                                                {%else%}
+                                                            
+                                                    <img id="{{unit.id}}" onclick="alert('로그인이 필요합니다')"class="heart" id="heart" src="{% static '빈하트.png' %}" alt="empty_heart">
+                                                    
+                                                {%endif%}
+                                                <span id="like_count{{unit.id}}">{{unit.like.count}}</span>
+                                                    </span>
+                                            </span>
+                                </div>
+                                <br>
+                        <table>
+                                <tr><th width="70px;" height="40px;"> Title</th><td width="400px; "height="40px;">{{unit.title}}</td></tr>
+                                <tr><td colspan="2">{{unit.body}}</td></tr>
+
+                            </table>
                         
-                        {% else %}
-                        <li><a href='#' onclick="authMessage()" > 쪽지보내기</a></li>
                         
-                        {%endif%}
-                       
-                        <li><a href="{% url 'userPage' unit.writer %}" > 구경가기</a></li>
-                    </ul>
-                    <br><br> {% if user == postContents.writer %}
-                    <a class="toNext" href="{% url 'deletePost' unit.id%}" onclick="return deletePost()">삭제하기</a>
-                    {% elif user.is_staff%}
-                    <a class="toNext" href="{% url 'deletePost' unit.id%}" onclick="return deletePost()">삭제하기</a>
-                    {%endif%}
+                           
+                        
+                        <br><br>
+                    </div>
             </div>  
         {% endfor %}
+        {% if postList.has_previous %}
+        <!--이전페이지가 있다면-->
+        <a href="?page=1">1</a> <!-- url을 그냥 써주면 됨-->
+        <a href="?page={{postList.previous_page_number}}">◀</a>
+        {% endif %}
+    
+        <span>{{postList.number}}</span>
+        <span>of</span>
+        <span>{{postList.paginator.num_pages}}</span>
+    
+        {% if postList.has_next %}
+        <!--다음페이지가 있다면-->
+        <a href="?page={{postList.next_page_number}}">▶</a>
+        <a href="?page={{postList.paginator.num_pages}}">{{postList.paginator.num_pages}}</a>
+        {% endif %}
     </div>
 
 
