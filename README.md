@@ -18,6 +18,7 @@ pip install django-allauth
 
 pip install pillow
 
+pip install simplejson
 
 
 python manage.py makemigrations
