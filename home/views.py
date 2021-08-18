@@ -7,6 +7,9 @@ from django.contrib.auth import get_user_model
 from django.views.generic.edit import FormView
 from django.db.models import Q
 from django.core.paginator import Paginator
+from django.http import HttpResponse
+from django.db.models.fields import json
+
 
 # Create your views here.
 def index(request):
@@ -50,4 +53,23 @@ def delete(request,postId):
    deletePost.delete() #삭제해주는 메소드
    return redirect('index')
 
+
+def post_likes(request):
+    if request.is_ajax():
+        blog_id = request.GET['blog_id']
+        post = Post.objects.get(id=blog_id)
+        user= request.user
+        
+        if post.like.filter(id=user.id).exists():
+            post.like.remove(user)
+            message = "좋아요 취소"
+        else:
+            post.like.add(user)
+            message="좋아요"
+
+    context={
+        'like_count': post.like.count(),
+        'message': message,
+    }
+    return HttpResponse(json.dumps(context), content_type='application/json')
 
