@@ -1,0 +1,62 @@
+{%extends 'base.html'%}
+
+{%block content%}
+   
+    {% load static %}
+    <style>
+        #userSub{
+            position: absolute;
+            margin-left: 700px;
+            border: 1px solid black;
+        }
+    </style>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+           
+            $("#toggle").click(function() {
+                $("#userSub").slideToggle("fast"); 
+            });
+        });
+    function deletePost() {
+        var ret = confirm("게시물을 삭제합니다.");
+        return ret;
+    }
+
+    function authMessage(){
+                       alert("쪽지는 로그인 하신 뒤 이용가능한 서비스 입니다");
+                  }
+</script>
+    <div class="newPost_list">
+        <h5 class="title">🔔 새로 올라온 글 🔔</h5>
+        <hr>
+        {% for unit in postList %}
+            <div id="content">  
+               
+                    {% if unit.image %}
+                        <img src={{unit.image.url}} alt='image' height="300px" width="300px">
+                         
+                    {% endif %}<br>
+                    제목: {{unit.title}}... |
+                    글내용: {{unit.summary}}... |
+                    <small>{{unit.pub_date}} </small>
+                    <button id="toggle">작성자 : {{unit.writer}}</button> 
+                    <ul id="userSub">
+                        {% if user.is_authenticated %}
+                        <li><a href="{% url 'newMessage' unit.writer unit.title%}" > 쪽지보내기</a></li>
+                        {% else %}
+                        <li><a href="{% url 'newMessage' unit.writer unit.title%}" onclick="authMessage()" > 쪽지보내기</a></li>
+                        {%endif%}
+                        <li><a href="{% url 'userPage' unit.writer %}" > 구경가기</a></li>
+                    </ul>
+                    <br><br> {% if user == postContents.writer %}
+                    <a class="toNext" href="{% url 'deletePost' unit.id%}" onclick="return deletePost()">삭제하기</a>
+                    {% elif user.is_staff%}
+                    <a class="toNext" href="{% url 'deletePost' unit.id%}" onclick="return deletePost()">삭제하기</a>
+                    {%endif%}
+            </div>  
+        {% endfor %}
+    </div>
+
+
+    {%endblock%}

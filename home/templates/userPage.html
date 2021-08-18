@@ -1,0 +1,80 @@
+{%extends 'base.html'%}
+
+{%block content%}
+   
+    {% load static %}
+    <style>
+        #unit{
+            text-align: center;
+            border: 1px solid rgb(219, 219, 219);
+            box-shadow: 2px 2px 2px rgb(219, 219, 219);
+            border-radius: 20px;
+            width: 50%;
+            padding: 20px;
+            margin: 20px auto;
+            background-color: white;
+        }
+
+        .container {
+            text-align: left;
+            margin-left: 205px;
+        }
+        .scroll{
+            position: relative;
+            width : 1000px;
+            height: 450px;
+            right: 200px;
+            overflow-y: scroll;
+            overflow-x: hidden;
+        }
+        hr{
+            margin: auto;
+            width:800px;
+        }
+        #unit > img{
+            float: left;
+        }
+    </style>
+     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+     <script>
+       
+         function OnMouseIn(elem) 
+           {
+               elem.style.color = "olive";
+           }
+       function OnMouseOut(elem) 
+           {
+               elem.style.color= "rgb(179, 108, 108)";
+           }
+         </script>
+   
+   
+ 
+    <div id="unit">
+            <h2>{{goTo}}스타그램</h2>
+            <div class="container">
+            {{userinfo.username}}<br>
+            
+            </div>  
+            <br><br>
+    
+        <hr>
+    
+        <div class="scroll myPost">
+            {% for unit in posts %}<!--근데 여기서는 항목별로 보이게 하려고 for문 써줌-->
+                <div id="unit" class='myPost'>
+                    {% if unit.image %}
+                    <img src={{unit.image.url}} alt='image' height="100px"width="100px">
+                     
+                    {% endif %}<br>
+                    제목 | {{unit.title}}<br> 
+                    작성자 | {{unit.writer}}<br>
+                    글 |  {{unit.summary}}<br>
+                   
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    <br>
+   
+    {%endblock%}
