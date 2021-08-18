@@ -53,20 +53,27 @@
     <div id="unit">
             <h2>{{goTo}}스타그램</h2>
             <div class="container">
-            {{userinfo.username}}<br>
-            
+                
+            {% for units in userinfo %}
+                {% if units.username == goTo%}
+                   유저네임: {{units.username}}<br>
+                     소개: {{units.introduce}}<br>
+                     {%endif %}
+            {% endfor %}
             </div>  
             <br><br>
     
         <hr>
     
         <div class="scroll myPost">
+           
             {% for unit in posts %}<!--근데 여기서는 항목별로 보이게 하려고 for문 써줌-->
                 <div id="unit" class='myPost'>
                     {% if unit.image %}
                     <img src={{unit.image.url}} alt='image' height="100px"width="100px">
                      
                     {% endif %}<br>
+                    {{unit}}
                     제목 | {{unit.title}}<br> 
                     작성자 | {{unit.writer}}<br>
                     글 |  {{unit.summary}}<br>

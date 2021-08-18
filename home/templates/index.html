@@ -1,7 +1,6 @@
 {%extends 'base.html'%}
 
 {%block content%}
-   
     {% load static %}
     <style>
         #userSub{
@@ -65,23 +64,30 @@
                     글내용: {{unit.summary}}... |
                     <small>{{unit.pub_date}} </small>
                     <button id="toggle">작성자 : {{unit.writer}}</button> 
+                    {% if user.is_authenticated %}
+                        <button id="{{unit.id}}" onclick="post_like(this.id)">
+                        {%if request.user in unit.like.all%}
+                        <img class="heart" id="heart{{unit.id}}" src="{% static '빨간하트.png' %}" alt="full_heart">
+                        {%else%}
+                        <img class="heart" id="heart{{unit.id}}" src="{% static '빈하트.png' %}" alt="empty_heart">
+                        {%endif%}
+                    {%else%}
+                    <button id="{{unit.id}}" onclick="alert('로그인이 필요합니다')">
+                        <img class="heart" id="heart" src="{% static '빈하트.png' %}" alt="empty_heart">
+                    </button>
+
+                    {%endif%}
+                    <span id="like_count{{unit.id}}">{{unit.like.count}}</span>
+                    </button>
                     <ul id="userSub">
                         {% if user.is_authenticated %}
                         <li><a href="{% url 'newMessage' unit.writer unit.title%}" > 쪽지보내기</a></li>
-                        <button id="{{unit.id}}" onclick="post_like(this.id)">
-                            {%if request.user in unit.like.all%}
-                            <img class="heart" id="heart{{unit.id}}" src="{% static '빨간하트.png' %}" alt="full_heart">
-                            {%else%}
-                            <img class="heart" id="heart{{unit.id}}" src="{% static '빈하트.png' %}" alt="empty_heart">
-                            {%endif%}
-                        </button>
+                        
                         {% else %}
                         <li><a href='#' onclick="authMessage()" > 쪽지보내기</a></li>
-                        <button id="{{unit.id}}" onclick="alert('로그인이 필요합니다')">
-                            <img class="heart" id="heart" src="{% static '빈하트.png' %}" alt="empty_heart">
-                        </button>
+                        
                         {%endif%}
-                        <span id="like_count{{unit.id}}">{{unit.like.count}}</span>
+                       
                         <li><a href="{% url 'userPage' unit.writer %}" > 구경가기</a></li>
                     </ul>
                     <br><br> {% if user == postContents.writer %}

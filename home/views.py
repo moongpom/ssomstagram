@@ -4,12 +4,11 @@ from django.utils import timezone
 from .forms import  *
 from user.models import  *
 from django.contrib.auth import get_user_model
-from django.views.generic.edit import FormView
 from django.db.models import Q
 from django.core.paginator import Paginator
 from django.http import HttpResponse
 from django.db.models.fields import json
-
+import simplejson as json
 
 # Create your views here.
 def index(request):
@@ -21,7 +20,7 @@ def index(request):
 
 def userPage(request,goTo):
     posts=Post.objects.filter( writer = goTo).order_by('-id')
-    userinfo =SomUser.objects.filter( username = goTo)
+    userinfo =get_user_model().objects.all()
     print(userinfo)
     print(posts)
     return render(request,"userPage.html",{ 'posts': posts,'goTo':goTo,'userinfo':userinfo})
@@ -67,9 +66,9 @@ def post_likes(request):
             post.like.add(user)
             message="좋아요"
 
-    context={
+    context = {
         'like_count': post.like.count(),
-        'message': message,
+        'message': message
     }
     return HttpResponse(json.dumps(context), content_type='application/json')
 
