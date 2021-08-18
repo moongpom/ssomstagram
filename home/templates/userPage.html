@@ -17,6 +17,7 @@
 
         .container {
             text-align: left;
+            word-break: break-all;
         }
         .scroll{
             position: relative;
@@ -95,10 +96,10 @@
                    {% if goTo == user.username%}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                    <button><a class="toNext" href="{% url 'editMypage' user.username%}">프로필수정하기</a></button><br><br>
                     {%endif%}
-            &nbsp;&nbsp;&nbsp;&nbsp;<b>{{units.introduce}}</b><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<br><b>{{units.introduce}}</b><br>
                      {%endif %}
             {% endfor %}
             
@@ -118,7 +119,7 @@
                     제목 | {{unit.title}}<br> 
                     작성자 | {{unit.writer}}<br>
                     글 |  {{unit.summary}}<br>
-                    {% if user == postContents.writer %}
+                    {% if user.username == unit.writer %}
                     <a class="toNext" href="{% url 'deletePost' unit.id%}" onclick="return deletePost()">삭제하기</a>
                     {% elif user.is_staff%}
                     <a class="toNext" href="{% url 'deletePost' unit.id%}" onclick="return deletePost()">삭제하기</a>

@@ -102,7 +102,7 @@
                     {% endif %}<br>
                     <div class="right">
                         <span class="goToWriter">
-                            {% if user == unit.writer %}
+                            {% if user.username == unit.writer %}
                             <a class="toNext" href="{% url 'deletePost' unit.id%}" onclick="return deletePost()">삭제하기</a>
                             {% elif user.is_staff%}
                             <a class="toNext" href="{% url 'deletePost' unit.id%}" onclick="return deletePost()">삭제하기</a>
@@ -119,9 +119,9 @@
                                             {%endif%}
                             {% endfor %}
                                             {{unit.writer}}</a>  
-                                            </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            &nbsp;&nbsp;
 
                                             <span class="dateheart">
                                                 <small>{{unit.pub_date}} </small>
