@@ -180,12 +180,14 @@
                   <a href=" {% url 'login'%}"> 로그인</a>  
                    {%endif%}</li>
                   <li> {% if user.is_authenticated %}
-                    {% if user.is_staff %}
-                        <strong>{{user.username}}</strong> 관리자 계정입니다.
-                    {% else %}
-                        <strong>{{user.username}}</strong>님 안녕하세요!
-                        <br>
-                    {%endif%} 
+                        {% if user.is_staff %}
+                            <strong>{{user.username}}</strong> 관리자 계정입니다.
+                          
+                        {% else %}
+                            <strong>{{user.username}}</strong>님 안녕하세요!
+                            <br>
+                        {%endif%} 
+                        {%else%} 로그인하세요
                     {%endif%}</li>
           </ul>
       </div>

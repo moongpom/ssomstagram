@@ -7,41 +7,30 @@
         #unit{
             margin: auto;
         }
-
-        .detailTable {
-            margin: auto;
-
-        }
         #unit{
             text-align: center;
             border: 1px solid rgb(219, 219, 219);
             box-shadow: 2px 2px 2px rgb(219, 219, 219);
             border-radius: 20px;
-            width: 50%;
+            width: 70%;
             padding: 20px;
             margin: 20px auto;
             background-color: white;
         }
-        table {   
-            border: 1px solid rgb(219, 219, 219);
-            box-shadow: 2px 2px 2px rgb(219, 219, 219);
-            border-radius: 20px;
-            padding: 20px;
-            margin: 20px;
-            background-color: white;
+        .msg{
+            overflow-y: scroll;
+            overflow-x: hidden;
+            height: 900px;
         }
-
-        #message_body {
-            padding: 30px;
+        .start{
+            background-color: rgb(221, 179, 187) !important;
         }
-
-        .message_body_2 {
-            width: 300px;
-            word-break:break-all;
-
+        name{
+            font-weight: 900;
+            font-size: 18px;
         }
     </style><br><br>
-        <div id="unit">
+        <div id="unit" class="msg">
     {% if message.to != user.username %}
             <h1>{{message.to}}님과의 쪽지</h1>
     {% elif message.writer != user.username %}
@@ -58,23 +47,26 @@
     
     
     <div>
+       
     {% for reply in replys %}
-    <b>{{reply.writer}}님이 보냄</b>
+    <div id="unit"> 
+    <b><name>{{reply.writer}}</name>님이  {{reply.pub_date}} 에 보냄</b><br><br>
         {{reply.body}}
-        {{reply.pub_date}}<br>
+      <br></div>
     {% endfor %}
-    </div>
+    <br>
+    </div> 
     
-    <div id="unit">  
+    <div id="unit" class="start">  
         
-        <b> {{message.writer}}님이 쪽지를 시작했습니다</b>
+        <b> <name>{{message.writer}}</name>님이 {{message.pub_date}}에 쪽지를 시작했습니다<br><br></b>
         {{message.body}}
           
-    <br>
-    {{message.pub_date}}
-    <br><br>
+    
+    
+    <br></div><br>
     <a  href="{% url 'deleteMessage' message.id%}"><button onclick="return deleteM()">메세지 삭제</button></a> 
-</div></div>
+</div>
         <script>
             function deleteM(){
                  var ret = confirm("상대가 받은/보낸 메세지 함에서도 삭제됩니다 정말 삭제하시겠습니까?");
