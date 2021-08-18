@@ -27,6 +27,30 @@
                        alert("쪽지는 로그인 하신 뒤 이용가능한 서비스 입니다");
                   }
 </script>
+<script type="text/javascript">
+    function post_like(p_id) {
+        $.ajax({
+            type: "GET",
+            url: "{% url 'post_likes' %}", 
+            data: {
+                'blog_id': p_id
+            }, 
+            dataType: "json",
+            success: function (response) {
+                $('#like_count' + p_id).html(response.like_count) 
+                    if (response.message == "좋아요") 
+                {
+                    $('#heart' + p_id).attr("src", "{% static '빨간하트.png' %}")
+                }
+                    else if (response.message == "좋아요 취소") 
+                {
+                    $('#heart' + p_id).attr("src", "{% static '빈하트.png' %}")
+                }
+            }
+        })
+    }
+
+</script>
     <div class="newPost_list">
         <h5 class="title">🔔 새로 올라온 글 🔔</h5>
         <hr>
@@ -44,9 +68,20 @@
                     <ul id="userSub">
                         {% if user.is_authenticated %}
                         <li><a href="{% url 'newMessage' unit.writer unit.title%}" > 쪽지보내기</a></li>
+                        <button id="{{unit.id}}" onclick="post_like(this.id)">
+                            {%if request.user in unit.like.all%}
+                            <img class="heart" id="heart{{unit.id}}" src="{% static '빨간하트.png' %}" alt="full_heart">
+                            {%else%}
+                            <img class="heart" id="heart{{unit.id}}" src="{% static '빈하트.png' %}" alt="empty_heart">
+                            {%endif%}
+                        </button>
                         {% else %}
                         <li><a href="{% url 'newMessage' unit.writer unit.title%}" onclick="authMessage()" > 쪽지보내기</a></li>
+                        <button id="{{unit.id}}" onclick="alert('로그인이 필요합니다')">
+                            <img class="heart" id="heart" src="{% static '빈하트.png' %}" alt="empty_heart">
+                        </button>
                         {%endif%}
+                        <span id="like_count{{unit.id}}">{{unit.like.count}}</span>
                         <li><a href="{% url 'userPage' unit.writer %}" > 구경가기</a></li>
                     </ul>
                     <br><br> {% if user == postContents.writer %}
