@@ -11,8 +11,9 @@
             border-radius: 20px;
             width: 50%;
             padding: 20px;
-            margin: 20px auto;
+            margin: 30px auto;
             background-color: white;
+            padding: 30px;
         }
         tr,td{
             padding: 5px;
@@ -25,17 +26,21 @@
             width: 350px;
             padding: 20px;
         }
+        .message_box {
+            font-family: fantasy;
+        }
     </style>
 <br><br>
-    <h2>메세지함</h2>
+    <h3 class="message_box">Message Box</h3>
     {% for unit in message %}<!--근데 여기서는 항목별로 보이게 하려고 for문 써줌-->
     <div id="unit">
         <a class="toNext" href="{% url 'detailMessage' unit.id%}">
             {% if unit.to != user.username %}
-            <h1><b>{{unit.to}}</b>님과의 쪽지</h1>
+            <h5>with  <b>{{unit.to}}</b></h5>
             {% elif unit.writer != user.username %}
-            <h1><b>{{unit.writer}}</b>님과의 쪽지</h1>
-            {% endif%}</a>
+            <h5>with  <b>{{unit.writer}}</b></h5>
+            {% endif%}
+        </a>
     </div>
 {% endfor %}
    

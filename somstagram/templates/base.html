@@ -90,7 +90,7 @@
 
       .main > li a:hover { 
         background: rgb(219, 219, 219);
-        color: rgb(9, 114, 18); 
+        color: rgb(202, 144, 178); 
       } 
 
       .sub { 
@@ -115,12 +115,14 @@
         margin-left: 0px;
       }
 
-      .userinfo {
-        float: right;
+      .title {
+        font-family: fantasy;
+        padding: 50px;
       }
-
     </style>
+
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
     <script>
       $(document).ready(function() { 
         $(".main>li").mouseover(function() { 
@@ -135,18 +137,14 @@
 </head>
 <body>
     {% load static %}
-    <br><br>
-     
-     
-
-    
-      <a href="{% url 'index' %}">
-       <h1>SOMSTAGRAM</h1>
-      </a><br><br><br>
+    <a href="{% url 'index' %}">
+     <h1 class="title">SOMSTAGRAM</h1>
+    </a>
    
       <div id="nav">
           <ul class="main">
-              <li> {% if user.is_authenticated %}
+              <li> 
+                {% if user.is_authenticated %}
                 <a href="{% url 'newPost' %}">글 작성하기</a>
                 {% else %}
                 
@@ -171,54 +169,27 @@
                   }
                   </script>
               </li>
-
-              <li> {% if user.is_authenticated %}
-                <a href="{% url 'mail' %}">메일 보내기</a>
-                {% else %}
-                
-                <a href="#" onclick="auth()">메일 보내기</a>
-                {%endif%}
-              </li>
-
               <li>  
                 {% if user.is_authenticated %}
                     <a href="{% url 'userPage' user.username %}" > 마이페이지 </a>
-                   
                 {% else %}
                     <a href="#" onclick="auth()">마이페이지</a>
-                    
                 {%endif%}</li>
               <li> {% if user.is_authenticated %}
                 <a href="{% url 'logout'%}">로그아웃</a> 
                  {% else %}
                   <a href=" {% url 'login'%}"> 로그인</a>  
                    {%endif%}</li>
-                  <!-- <li> {% if user.is_authenticated %}
+                  <li> {% if user.is_authenticated %}
                         {% if user.is_staff %}
                             <strong>{{user.username}}</strong> 관리자 계정입니다.
-                          
                         {% else %}
-                          <strong>{{user.username}}</strong>님 안녕하세요!
-                          <br>
+                            <strong>{{user.username}}</strong>님 안녕하세요!
+                            <br>
                         {%endif%} 
                         {%else%} 로그인하세요
-                    {%endif%}</li> -->
+                    {%endif%}</li>
           </ul>
-          <div class="userinfo">
-              <br>
-              {% if user.is_authenticated %}
-              {% if user.is_staff %}
-                  <strong>{{user.username}}</strong> 관리자 계정입니다.
-                
-              {% else %}
-                <strong>{{user.username}}</strong>님 안녕하세요!
-                <br>
-              {%endif%} 
-              {%else%} <br><br>로그인하세요
-              {%endif%}
-              <br>
-            </div>
-
       </div>
    
   {% block content %}
@@ -227,7 +198,9 @@
     <br>
     <hr>
     <br>
-    🐨<strong>솜스타그램</strong>🐨<br><a href="https://www.dongduk.ac.kr/kor/main.do">동덕여대</a> <a href="https://www.likelion.net/?utm_source=classlion_online_offline&utm_medium=naver_brand_sa&utm_campaign=naver_bsa_210705&NaPm=ct%3Dks7goaog%7Cci%3D0uzp002EK1bvr1Kpq11p%7Ctr%3Dbrnd%7Chk%3Db1f55dbc4b8c64c115d175f3e82ca02ddb6d29a0"> 멋쟁이 사자처럼  </a>
+    🐨<strong>솜스타그램</strong>🐨<br>
+    <a href="https://www.dongduk.ac.kr/kor/main.do">동덕여대</a> 
+    <a href="https://www.likelion.net/?utm_source=classlion_online_offline&utm_medium=naver_brand_sa&utm_campaign=naver_bsa_210705&NaPm=ct%3Dks7goaog%7Cci%3D0uzp002EK1bvr1Kpq11p%7Ctr%3Dbrnd%7Chk%3Db1f55dbc4b8c64c115d175f3e82ca02ddb6d29a0"> 멋쟁이 사자처럼</a>
     9기 <br> 개발자 <strong>  김지원 전혜인 정은영 정재운</strong>
   </footer>
   <br>

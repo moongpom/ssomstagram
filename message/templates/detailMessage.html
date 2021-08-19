@@ -20,59 +20,74 @@
         .msg{
             overflow-y: scroll;
             overflow-x: hidden;
-            height: 900px;
+            height: 100vh;
         }
+
         .start{
             background-color: rgb(221, 179, 187) !important;
         }
+
         name{
             font-weight: 900;
             font-size: 18px;
         }
     </style><br><br>
-        <div id="unit" class="msg">
+    
+    <div id="unit" class="msg">
+    <br>
     {% if message.to != user.username %}
-            <h1>{{message.to}}님과의 쪽지</h1>
+            <h3>{{message.to}}님과의 쪽지</h3>
     {% elif message.writer != user.username %}
-            <h1>{{message.writer}}님과의 쪽지</h1>
+            <h3>{{message.writer}}님과의 쪽지</h3>
     {% endif%}
+    <br>
+
+    <hr>
+    <br>
+
     <div id=reply>
         <form method="POST" action="{%url 'replyMessage' message.id  %}" enctype="multipart/form-data">
             {%csrf_token%}
             ✏답장
+            <br><br>
             {{ replyForm  }}
+            <br><br>
             <input type="submit">
         </form>
     </div>
-    
-    
-    <div>
-       
-    {% for reply in replys %}
-    <div id="unit"> 
-    <b><name>{{reply.writer}}</name>님이  {{reply.pub_date}} 에 보냄</b><br><br>
-        {{reply.body}}
-      <br></div>
-    {% endfor %}
+
     <br>
+    <hr>
+    <br>
+
+    <div>
+        {% for reply in replys %}
+        <div id="unit"> 
+        <b><name>{{reply.writer}}</name>님이  {{reply.pub_date}} 에 보냄</b>
+        <br><br>
+        {{reply.body}}
+        <br></div>
+        {% endfor %}
+        <br>
     </div> 
     
     <div id="unit" class="start">  
-        
-        <b> <name>{{message.writer}}</name>님이 {{message.pub_date}}에 쪽지를 시작했습니다<br><br></b>
+        <b> <name>{{message.writer}}</name>님이 {{message.pub_date}}에 쪽지를 시작했습니다</b>
+        <br><br>
         {{message.body}}
-          
-    
-    
-    <br></div><br>
+        <br>
+    </div>
+    <br>
     <a  href="{% url 'deleteMessage' message.id%}"><button onclick="return deleteM()">메세지 삭제</button></a> 
+    <br><br>
 </div>
-        <script>
-            function deleteM(){
-                 var ret = confirm("상대가 받은/보낸 메세지 함에서도 삭제됩니다 정말 삭제하시겠습니까?");
-                 return ret;
-            }
-        </script>
-        {%endblock%}
+
+<script>
+    function deleteM(){
+         var ret = confirm("상대가 받은/보낸 메세지 함에서도 삭제됩니다 정말 삭제하시겠습니까?");
+         return ret;
+    }
+</script>
+{%endblock%}
 
        
