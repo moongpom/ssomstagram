@@ -119,6 +119,10 @@
         font-family: fantasy;
         padding: 50px;
       }
+
+      .userinfo {
+        float: right;
+      }
     </style>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -171,16 +175,24 @@
               </li>
               <li>  
                 {% if user.is_authenticated %}
-                    <a href="{% url 'userPage' user.username %}" > 마이페이지 </a>
+                    <a href="{% url 'mail' %}" >메일보내기</a>
                 {% else %}
-                    <a href="#" onclick="auth()">마이페이지</a>
+                    <a href="#" onclick="auth()">메일보내기</a>
                 {%endif%}</li>
+                <li>  
+                  {% if user.is_authenticated %}
+                      <a href="{% url 'userPage' user.username %}" > 마이페이지 </a>
+                  {% else %}
+                      <a href="#" onclick="auth()">마이페이지</a>
+                  {%endif%}</li>
+
               <li> {% if user.is_authenticated %}
                 <a href="{% url 'logout'%}">로그아웃</a> 
                  {% else %}
                   <a href=" {% url 'login'%}"> 로그인</a>  
                    {%endif%}</li>
-                  <li> {% if user.is_authenticated %}
+                   <br><br>
+                  <div class="userinfo"> {% if user.is_authenticated %}
                         {% if user.is_staff %}
                             <strong>{{user.username}}</strong> 관리자 계정입니다.
                         {% else %}
@@ -188,7 +200,7 @@
                             <br>
                         {%endif%} 
                         {%else%} 로그인하세요
-                    {%endif%}</li>
+                    {%endif%}</div>
           </ul>
       </div>
    
