@@ -114,6 +114,11 @@
       .logo_image {
         margin-left: 0px;
       }
+
+      .userinfo {
+        float: right;
+      }
+
     </style>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
@@ -166,6 +171,15 @@
                   }
                   </script>
               </li>
+
+              <li> {% if user.is_authenticated %}
+                <a href="{% url 'mail' %}">메일 보내기</a>
+                {% else %}
+                
+                <a href="#" onclick="auth()">메일 보내기</a>
+                {%endif%}
+              </li>
+
               <li>  
                 {% if user.is_authenticated %}
                     <a href="{% url 'userPage' user.username %}" > 마이페이지 </a>
@@ -179,17 +193,32 @@
                  {% else %}
                   <a href=" {% url 'login'%}"> 로그인</a>  
                    {%endif%}</li>
-                  <li> {% if user.is_authenticated %}
+                  <!-- <li> {% if user.is_authenticated %}
                         {% if user.is_staff %}
                             <strong>{{user.username}}</strong> 관리자 계정입니다.
                           
                         {% else %}
-                            <strong>{{user.username}}</strong>님 안녕하세요!
-                            <br>
+                          <strong>{{user.username}}</strong>님 안녕하세요!
+                          <br>
                         {%endif%} 
                         {%else%} 로그인하세요
-                    {%endif%}</li>
+                    {%endif%}</li> -->
           </ul>
+          <div class="userinfo">
+              <br>
+              {% if user.is_authenticated %}
+              {% if user.is_staff %}
+                  <strong>{{user.username}}</strong> 관리자 계정입니다.
+                
+              {% else %}
+                <strong>{{user.username}}</strong>님 안녕하세요!
+                <br>
+              {%endif%} 
+              {%else%} <br><br>로그인하세요
+              {%endif%}
+              <br>
+            </div>
+
       </div>
    
   {% block content %}

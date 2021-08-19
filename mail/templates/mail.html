@@ -16,13 +16,13 @@
         padding: 10px;
     }
     </style>
-    <h2>관리자에게 문의메일 보내기</h2>
-<!--
-    <a href="sendmail/">
-        메일보내기
-    <button>SEND1</button>
-    </a>-->
-    <div class="container">
+
+        <!--
+        <a href="sendmail/">
+            메일보내기
+        <button>SEND1</button>
+        </a>
+
         <form method="post" enctype="multipart/form-data">
             {%csrf_token%}
            <div class="form-control">
@@ -40,6 +40,15 @@
         <div class="form-control">
          <input type="Submit" class="btn submit-btn" value="Send Mail">
         </div>
+        </form> -->
+
+
+        <div class="container">
+        <h2>메일 보내기</h2><br>
+        <form action="{% url 'mail' %}" method="post" enctype="multipart/form-data">
+            {%csrf_token%}
+            {{contact_form.as_p}}
+            <button type="submit">메일 전송하기</button>
         </form>
         </div>
         {%endblock%}
