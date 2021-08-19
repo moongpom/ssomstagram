@@ -10,11 +10,13 @@ from django.http import HttpResponse
 from django.db.models.fields import json
 import simplejson as json
 from django.contrib.auth.models import User
+
 # Create your views here.
+
 def index(request):
     post_list = Post.objects.all().order_by('-id')
     userinfo =get_user_model().objects.all()
-    paginatorPost = Paginator(post_list,5)
+    paginatorPost = Paginator(post_list,6)
     page = request.GET.get('page')
     Posts = paginatorPost.get_page(page)
     return render(request,"index.html",{'postList':Posts,'userinfo':userinfo})

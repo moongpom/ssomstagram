@@ -1,55 +1,89 @@
 {%extends 'base.html'%}
 
 {%block content%}
-    {% load static %}
-    <style>
-        #userSub{
-            position: absolute;
-            margin-left: 700px;
-            border: 1px solid black;
-        }
-        .heart{
-            width:40px;
-        }
-        .thumb{
-            float: left;
-            clear: both;
-            background-color: white;
-        }
-        #content{
-            height: 340px;
-            width: 840px;
-            margin: auto;
-            margin-bottom: 50px;
-            background-color: white;
-            word-break: break-all;
-            overflow-y: scroll;
-            overflow-x: hidden;
-            padding: 20px;
-        }
-        #profileImage{
-            border-radius: 100%;
-            border: 1.5px solid brown;
-            width:40px;
-            height: 40px;
-        }
-        .goToWriter a{
-            font-size: 20px;
-            font-weight: 900;
-        }
-        .goToWriter{
-            /*text-align: left;
-            position: relative;
-            left:50px;*/
-            
-        }
-        .profile{
-            background-color: rgb(223, 184, 192);
-            padding-top: 10px;
-            padding-bottom: 10px;
-        }
-    </style>
+{% load static %}
+<style>
+    .newPost_list {
+        margin: 30px;
+    }
+    #userSub{
+        position: absolute;
+        margin-left: 700px;
+        border: 1px solid black;
+    }
+
+    .heart{
+        width:40px;
+    }
+
+    .thumb{
+        clear: both;
+        background-color: white;
+        position: relative;
+    }
+
+    #content{
+        position: relative;
+        height: 500px;
+        width: 30%;
+        display: inline-block;
+        margin: auto;
+        margin-bottom: 50px;
+        background-color: white;
+        word-break: break-all;
+        overflow-y: scroll;
+        overflow-x: hidden;
+        padding: 0px;
+        margin: 15px;
+    }
+
+    #profileImage{
+        margin-left: 15px;
+        margin-right: 10px;
+        border-radius: 100%;
+        border: 1.5px solid brown;
+        width:40px;
+        height: 40px;
+    }
+
+
+    .goToWriter a{
+        font-size: 20px;
+        font-weight: 900;
+    }
+
+    .profile{
+        text-align: left;
+        position: relative;
+        width: 500px;
+        background-color: rgb(223, 184, 192);
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+
+    .page {
+        display: block;
+        margin-top: 50px;
+    }
+
+    .dateheart {
+        text-align: left;
+        margin-left: 10px;
+        margin-top: 10px;
+    }
+
+    .title2 {
+        text-align: left;
+    }
+
+    .body2 {
+        text-align: left;
+        padding-left: 15px;
+    }
+</style>
+
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 <script>
     $(document).ready(function() {
            
@@ -66,6 +100,7 @@
                        alert("쪽지는 로그인 하신 뒤 이용가능한 서비스 입니다");
                   }
 </script>
+
 <script type="text/javascript">
     function post_like(p_id) {
         $.ajax({
@@ -88,90 +123,89 @@
             }
         })
     }
+</script>
 
-</script><br><br>
-    <div class="newPost_list">
-        <h5 class="title">피드</h5>
-        <hr>
-        {% for unit in postList %}
-            <div id="content">  
-               
-                    {% if unit.image %}
-                        <img class="thumb" src={{unit.image.url}} alt='image' height="300px" width="300px">
-                         
-                    {% endif %}<br>
-                    <div class="right">
-                        <span class="goToWriter">
-                            {% if user.username == unit.writer %}
-                            <a class="toNext" href="{% url 'deletePost' unit.id%}" onclick="return deletePost()">삭제하기</a>
-                            {% elif user.is_staff%}
-                            <a class="toNext" href="{% url 'deletePost' unit.id%}" onclick="return deletePost()">삭제하기</a>
-                            {%endif%}
-                            {% for units in userinfo %}
-                                {% if units.username == unit.writer%}
-                                    <div class="profile">
-                                            <a href="{% url 'userPage' unit.writer %}" >
-                                                {% if units.profileImage %}
-                                                      <img id="profileImage"  src={{units.profileImage.url}} alt='image' height="100px" width="100px">
-                                                {% else%}
-                                                     <img id="profileImage" src= "{%static '솜솜.jpg'%}" alt='image' height="100px" width="100px"></a>
-                                                {% endif %}
-                                            {%endif%}
-                            {% endfor %}
-                                            {{unit.writer}}</a>  
-                            </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                            &nbsp;&nbsp;
+<div class="newPost_list">
+    {% for unit in postList %}
+    <div id="content">  
+        <div class="right">
+            <span class="goToWriter">
+                {% for units in userinfo %}
+                    {% if units.username == unit.writer%}
+                        <div class="profile">
+                            <a href="{% url 'userPage' unit.writer %}" >
+                            {% if units.profileImage %}
+                                  <img id="profileImage"  src={{units.profileImage.url}} alt='image' height="100px" width="100px">
+                            {% else%}
+                                 <img id="profileImage" src= "{%static '솜솜.jpg'%}" alt='image' height="100px" width="100px"></a>
+                            {% endif %}
+                    {%endif%}
+                {% endfor %}
+                {{unit.writer}}</a>
+            </span>
+            
+        </div>
 
-                                            <span class="dateheart">
-                                                <small>{{unit.pub_date}} </small>
-                                                &nbsp;
-                                                {% if user.is_authenticated %}
-                                                    <span id="{{unit.id}}" onclick="post_like(this.id)">
-                                                            {%if request.user in unit.like.all%}
-                                                                <img class="heart" id="heart{{unit.id}}" src="{% static '빨간하트.png' %}" alt="full_heart">
-                                                            {%else%}
-                                                                <img class="heart" id="heart{{unit.id}}" src="{% static '빈하트.png' %}" alt="empty_heart">
-                                                            {%endif%}
-                                                {%else%}
-                                                            
-                                                    <img id="{{unit.id}}" onclick="alert('로그인이 필요합니다')"class="heart" id="heart" src="{% static '빈하트.png' %}" alt="empty_heart">
-                                                    
-                                                {%endif%}
-                                                <span id="like_count{{unit.id}}">{{unit.like.count}}</span>
-                                                    </span>
-                                            </span>
-                                </div>
-                                <br>
-                        <table>
-                                <tr><th width="70px;" height="40px;"> Title</th><td width="400px; "height="40px;">{{unit.title}}</td></tr>
-                                <tr><td colspan="2">{{unit.body}}</td></tr>
-
-                            </table>
-                        
-                        
-                           
-                        
-                        <br><br>
-                    </div>
-            </div>  
-        {% endfor %}
-        {% if postList.has_previous %}
-        <!--이전페이지가 있다면-->
-        <a href="?page=1">1</a> <!-- url을 그냥 써주면 됨-->
-        <a href="?page={{postList.previous_page_number}}">◀</a>
+        <br>
+                    
+        {% if unit.image %}
+        <img class="thumb" src={{unit.image.url}} alt='image' height="300px" width="300px">
         {% endif %}
-    
-        <span>{{postList.number}}</span>
-        <span>of</span>
-        <span>{{postList.paginator.num_pages}}</span>
-    
-        {% if postList.has_next %}
-        <!--다음페이지가 있다면-->
-        <a href="?page={{postList.next_page_number}}">▶</a>
-        <a href="?page={{postList.paginator.num_pages}}">{{postList.paginator.num_pages}}</a>
-        {% endif %}
+        <br>
+
+            <div class="dateheart">
+                {% if user.is_authenticated %}
+                <span id="{{unit.id}}" onclick="post_like(this.id)">
+                    {%if request.user in unit.like.all%}
+                        <img class="heart" id="heart{{unit.id}}" src="{% static '빨간하트.png' %}" alt="full_heart">
+                    {%else%}
+                        <img class="heart" id="heart{{unit.id}}" src="{% static '빈하트.png' %}" alt="empty_heart">
+                    {%endif%}
+                    {%else%}
+                        <img id="{{unit.id}}" onclick="alert('로그인이 필요합니다')"class="heart" id="heart" src="{% static '빈하트.png' %}" alt="empty_heart">
+                    {%endif%}
+                    <span id="like_count{{unit.id}}">{{unit.like.count}}</span>
+                </span>
+                &nbsp;
+                <small>{{unit.pub_date}} </small>
+            </div>
+
+            <table>
+                <tr>
+                    <th width="70px;" height="40px;"> Title</th>
+                    <td width="400px;" height="40px;" class="title2">{{unit.title}}</td>
+                </tr>
+                <tr>
+                    <td colspan="2" class="body2">{{unit.body}}</td>
+                </tr>
+            </table>
+            <br>
+            {% if user.username == unit.writer %}
+            <a class="toNext" href="{% url 'deletePost' unit.id%}" onclick="return deletePost()">삭제하기</a>
+            {% elif user.is_staff%}
+            <a class="toNext" href="{% url 'deletePost' unit.id%}" onclick="return deletePost()">삭제하기</a>
+            {%endif%}
     </div>
+</div>  
+{% endfor %}
 
+<br>
 
-    {%endblock%}
+<div class="page">
+    {% if postList.has_previous %}
+    <!--이전페이지가 있다면-->
+    <a href="?page=1">1</a> <!-- url을 그냥 써주면 됨-->
+    <a href="?page={{postList.previous_page_number}}">◀</a>
+    {% endif %}
+    <span>{{postList.number}}</span>
+    <span>of</span>
+    <span>{{postList.paginator.num_pages}}</span>
+    {% if postList.has_next %}
+    <!--다음페이지가 있다면-->
+    <a href="?page={{postList.next_page_number}}">▶</a>
+    <a href="?page={{postList.paginator.num_pages}}">{{postList.paginator.num_pages}}</a>
+    {% endif %}
+</div>
+    
+
+{%endblock%}

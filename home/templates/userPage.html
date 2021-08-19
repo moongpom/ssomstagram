@@ -22,7 +22,7 @@
         .scroll{
             position: relative;
             width : 900px;
-            height: 650px;
+            height: 500px;
             right: 200px;
             overflow-y: scroll;
             overflow-x: hidden;
@@ -37,6 +37,9 @@
         #profileImage{
             border-radius: 100%;
             border: 1.5px solid brown;
+            margin-left: 10px;
+            margin-right: 30px;
+            margin-bottom: 30px;
         }
         .profile{
             float: left;
@@ -52,7 +55,13 @@
             font-weight: 900;
             font-size: 30px;
         }
+
+        .introduce {
+            margin-left: 200px;
+            width: 500px;
+        }
     </style>
+
      <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
      <script>
        
@@ -80,33 +89,41 @@
                 <div class="container">
                     <div class="profile">
                         {% if units.profileImage %}
-                            <img id="profileImage"  src={{units.profileImage.url}} alt='image' height="100px" width="100px">
+                            <img id="profileImage"  src={{units.profileImage.url}} alt='image' height="150px" width="150px">
                         {% else%}
-                            <img id="profileImage" src= "{%static '솜솜.jpg'%}" alt='image' height="100px" width="100px"></a>
-                        {% endif %}<br>
-                        </div>
-                   <name>{{units.username}}   </name>                          
+                            <img id="profileImage" src= "{%static '솜솜.jpg'%}" alt='image' height="150px" width="150px"></a>
+                        {% endif %}
+                        <br>
+                    </div>
+
+                   <name>{{units.username}}</name>  
+
+                   <br><br>       
+
                    {% if user.is_authenticated %}
                    <button><a href="{% url 'newMessage' goTo %}" > 쪽지보내기</a></button>
-                   
                    {% else %}
                    <button><a href='#' onclick="authMessage()" > 쪽지보내기</a></button>
-                   
                    {%endif%}
-                   {% if goTo == user.username%}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                   <button><a class="toNext" href="{% url 'editMypage' user.username%}">프로필수정하기</a></button><br><br>
+
+                   {% if goTo == user.username%}
+                   <button>
+                       <a class="toNext" href="{% url 'editMypage' user.username%}">프로필수정하기</a>
+                    </button>
                     {%endif%}
-            &nbsp;&nbsp;&nbsp;&nbsp;<br><b>{{units.introduce}}</b><br>
-                     {%endif %}
+
+                    <br><br>
+                    <div class="introduce">
+                        {{units.introduce}}
+                    </div>
+
+                    {%endif %}
             {% endfor %}
             
             </div>  
-            <br><br>
-    
+        <br>
         <hr>
+        <br>
     
         <div class="scroll myPost">
            
