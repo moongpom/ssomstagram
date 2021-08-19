@@ -1,0 +1,1 @@
+web: gunicorn somstagram.wsgi --log-file -

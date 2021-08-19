@@ -22,6 +22,8 @@ pip install simplejson
 
 pip install django-rest-framework
 
+pip install gunicorn whitenoise dj-database-url psycopg2-binary
+
 python manage.py makemigrations
 
 python manage.py migrate
