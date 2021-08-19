@@ -20,6 +20,7 @@ pip install pillow
 
 pip install simplejson
 
+pip install django-rest-framework
 
 python manage.py makemigrations
 
