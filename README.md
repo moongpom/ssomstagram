@@ -29,6 +29,11 @@ pip install django-storages boto3
 python manage.py makemigrations
 
 python manage.py migrate
+-------------------------------
+pip install django-storages
+pip install boto3
+secrests.json - manage.py있는 폴더에
 
+-------------------------------
 
 python manage.py runserver
