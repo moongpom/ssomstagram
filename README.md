@@ -24,6 +24,8 @@ pip install django-rest-framework
 
 pip install gunicorn whitenoise dj-database-url psycopg2-binary
 
+pip install django-storages boto3
+
 python manage.py makemigrations
 
 python manage.py migrate
