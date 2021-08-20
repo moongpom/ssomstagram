@@ -77,16 +77,17 @@
                     <b><name>내가</name>  {{reply.pub_date}} 에 보냄</b>
                     <br><br>
                     {{reply.body}}
-                    <br>
+                    <br><a  href="{% url 'deleteReply' reply.id message.id%} "><button onclick="return deleteM()">메세지 삭제</button></a> 
                 </div>
             {% else%}
                 <div id="unit" class="receive"> 
                     <b><name>{{reply.writer}}</name>님이  {{reply.pub_date}} 에 보냄</b>
                     <br><br>
                     {{reply.body}}
-                    <br>
+                    <br><a  href="{% url 'deleteReply' reply.id message.id%}"><button onclick="return deleteM()">메세지 삭제</button></a> 
                 </div> 
             {%endif%}
+            
         {% endfor %}
         <br>
     </div> 
@@ -95,10 +96,10 @@
         <b> <name>{{message.writer}}</name>님이 {{message.pub_date}}에 쪽지를 시작했습니다</b>
         <br><br>
         {{message.body}}
-        <br>
+        <br><a  href="{% url 'deleteMessage' message.id%}"><button onclick="return deleteM()">메세지 삭제/메세지함 영구 나가기</button></a> 
     </div>
     <br>
-    <a  href="{% url 'deleteMessage' message.id%}"><button onclick="return deleteM()">메세지 삭제</button></a> 
+    
     <br><br>
 </div>
 

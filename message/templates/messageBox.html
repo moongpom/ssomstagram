@@ -8,41 +8,128 @@
             text-align: center;
             border: 1px solid rgb(219, 219, 219);
             box-shadow: 2px 2px 2px rgb(219, 219, 219);
-            border-radius: 20px;
-            width: 50%;
-            padding: 20px;
-            margin: 30px auto;
+            border-radius: 10px;
+            width: 60%;
+            height: 140px;
+            padding: 10px;
+            margin: auto;
             background-color: white;
             padding: 30px;
-        }
-        tr,td{
-            padding: 5px;
-        }
-        td{
-            width: 150px;
-            padding: 10px;
-        }
-        .summary{
-            width: 350px;
-            padding: 20px;
+            word-break: break-all;
+            overflow-y: scroll;
+            overflow-x: hidden;
         }
         .message_box {
             font-family: fantasy;
         }
+        #profileImage{
+        border-radius: 100%;
+        border: 1.5px solid brown;
+        width:60px;
+        height: 60px;
+    }
+    .name{
+        font-size: 15px;
+    }
+    .profile{
+        float: left;
+        margin-right: 30px;
+        width:150px;
+        text-align: left;
+    }
+    .msg{clear: both;}
+    small{font-size: xx-small;}
+    small1{font-size: small;}
+    info{
+        font-size: small;
+    }
     </style>
-<br><br>
-    <h3 class="message_box">Message Box</h3>
+    
+<script>
+    function deleteM(){
+         var ret = confirm("상대가 받은/보낸 메세지 함에서도 삭제됩니다 정말 삭제하시겠습니까?");
+         return ret;
+    }
+</script>
+    <br><br>
+    <h3 class="message_box">Message Box</h3><br>
+    
     {% for unit in message %}<!--근데 여기서는 항목별로 보이게 하려고 for문 써줌-->
-    <div id="unit">
-        <a class="toNext" href="{% url 'detailMessage' unit.id%}">
+        <div id="unit">
+            
+            <span class="profile">
             {% if unit.to != user.username %}
-            <h5>with  <b>{{unit.to}}</b></h5>
-            {% elif unit.writer != user.username %}
-            <h5>with  <b>{{unit.writer}}</b></h5>
+                {% for units in userinfo %}
+                <a href="{% url 'userPage' units.id %}" >
+                    {% if  units.username == unit.to%}
+                            
+                        {% if units.profileImage %}
+                            <img id="profileImage"  src={{units.profileImage.url}} alt='image' height="100px" width="100px">
+                            <b class="name">{{unit.to}}</b>
+                        {% else%}
+                            <img id="profileImage" src= "{%static '솜솜.jpg'%}" alt='image' height="100px" width="100px">
+                            <b class="name">{{unit.to}}</b>
+                                
+                        {% endif %} 
+                    {% endif %} 
+                </a>
+                {% endfor %}
+             
+           
+            {% elif unit.writer.id != user.id %}
+            
+                {% for units in userinfo %}
+                <a href="{% url 'userPage' units.id %}" >
+                    {% if units.id == unit.writer.id%}
+                        {% if units.profileImage %}
+                            <img id="profileImage"  src={{units.profileImage.url}} alt='image' height="100px" width="100px">
+                            <b class="name">{{unit.writer}}</b>
+                        {% else%}
+                            <img id="profileImage" src= "{%static '솜솜.jpg'%}" alt='image' height="100px" width="100px">
+                            <b class="name">{{unit.writer}}</b>
+                        {% endif %}
+                    {% endif %} </a>
+                {% endfor %}
+                
             {% else %}
-            <h5>with  <b>{{user.username}}</b></h5>
-            {% endif%}
-        </a>
+                {% for units in userinfo %}
+                <a href="{% url 'userPage' units.id %}" >
+                    {% if  units.username == user.username%}
+                                <!--나한테 보냄-->
+                        {% if units.profileImage %}
+                            <img id="profileImage"  src={{units.profileImage.url}} alt='image' height="100px" width="100px">
+                            <b class="name">{{user.username}}<small1><br>(나와의 메세지)</small1></b>
+                        {% else%}
+                            <img id="profileImage" src= "{%static '솜솜.jpg'%}" alt='image' height="100px" width="100px">
+                            <b class="name">{{user.username}}<small1><br>(나와의 메세지)</small1></b>
+                        {% endif %} 
+                    {% endif %} 
+                {% endfor %}</a>
+                
+             {% endif%}
+             <a  href="{% url 'deleteMessage' unit.id%}"><small><button onclick="return deleteM()">메세지 삭제</button></small></a> 
+            </span>
+            <a class="toNext" href="{% url 'detailMessage' unit.id%}">
+                <span class="msg">
+                <script>
+                    var num=0;var nm=0;
+                    document.write("{% for reply in replys %}");
+                        
+                        document.write("{% if reply.messageId.id == unit.id %}");
+                        
+                        if (num == 0){
+                            document.write("<info>{{reply.writer}}님이  보낸 최근  메세지</info><small>({{reply.pub_date}})</small>  : <br><b>{{reply.summary|linebreaks }}</b><br>");
+                            //document.write(num+"최근메세지 <br><br>");
+                            nm=1;
+                            num++;
+                        }
+                        //   document.write(num+"num++하고나서<br>");
+                        document.write("{%endif%}");
+                    document.write("{% endfor %}  ");
+                    if(nm==0){ document.write("<info>🎈{{unit.writer}}님이 {{unit.to}}께 대화쪽지를 시작했습니다 </info><small>({{unit.pub_date}})</small>:");
+                    document.write("<br><br><b>{{unit.summaryBody|linebreaks }}</b> <br>");}
+                    </script></span>
+            </a>
     </div>
 {% endfor %}
    

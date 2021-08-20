@@ -5,5 +5,5 @@ urlpatterns = [
     path('logout/',logout_view,name="logout"),
     path('signUp/',register_view,name="signUp"),
     #path('mypage/',mypage,name="mypage"),
-    path('editMypage/<str:goTo>',editMypage,name="editMypage"),
+    path('editMypage/<int:goTo>',editMypage,name="editMypage"),
 ] 

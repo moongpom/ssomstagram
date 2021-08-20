@@ -12,7 +12,3 @@ class PostForm(forms.ModelForm):
         fields =['title','body','image']
 
 
-
-
-class PostSearchForm(forms.Form):
-    search_word = forms.CharField(label='Search Word')

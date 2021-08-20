@@ -14,12 +14,17 @@ def detailMessage(request, messageId):
     return render(request, 'detailMessage.html', {'message':message,'replys':replys,'replyForm':replyForm})
 
 def messageBox(request):#메세지함
-    messages=Message.objects.filter( to = request.user).order_by('-id')|Message.objects.filter(   writer = request.user).order_by('-id')
     userinfo =get_user_model().objects.all()
+    messages=Message.objects.filter( to = request.user).order_by('-id')|Message.objects.filter(   writer = request.user).order_by('-id')
     paginator = Paginator(messages, 10)
     page = request.GET.get('page')
     message = paginator.get_page(page)
-    return render(request,"messageBox.html",{'message':message,'userinfo':userinfo})
+    replys = Reply.objects.all().order_by('-id')
+    #paginatorPost = Paginator(replys,1)
+    #page = request.GET.get('page')
+    #reply = paginatorPost.get_page(page)
+    return render(request,"messageBox.html",{'message':message,'replys':replys,'userinfo':userinfo})
+
 
 def newMessage(request,to):
     if request.method == 'POST':
@@ -51,3 +56,9 @@ def deleteMessage(request,messageId):
    
    deletePost.delete() #삭제해주는 메소드
    return redirect('messageBox')
+
+def deleteReply(request,replyId,messageId):
+   deleteReply = get_object_or_404(Reply,pk=replyId)
+   
+   deleteReply.delete() #삭제해주는 메소드
+   return redirect('detailMessage',messageId)

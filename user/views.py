@@ -20,8 +20,8 @@ def login_view(request):
             user = authenticate(request=request,username=username,password=password)
             if user is not None:
                 login(request,user)
-
-        return redirect("userPage",request.user)
+        return redirect("index")
+       # return redirect("userPage",request.user)
     else:
         form = AuthenticationForm()
         return render(request,'login.html',{'form':form})

@@ -4,7 +4,7 @@
 {% load static %}
 <style>
     .newPost_list {
-        margin: 30px;
+        margin-top: 50px;
     }
     #userSub{
         position: absolute;
@@ -80,6 +80,12 @@
         text-align: left;
         padding-left: 15px;
     }
+    small{
+        font-size: small;
+    }
+    .del{
+        font-weight: 900;
+    }
 </style>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -125,26 +131,31 @@
     }
 </script>
 
-<div class="newPost_list">
+<br><br>
     {% for unit in postList %}
+    <span class="newPost_list">
     <div id="content">  
-        <div class="right">
             <span class="goToWriter">
+                <div class="profile">
                 {% for units in userinfo %}
-                    {% if units.username == unit.writer%}
-                        <div class="profile">
-                            <a href="{% url 'userPage' unit.writer %}" >
+               
+                    {% if units.id == unit.writer.id%}
+                        
+                            <a href="{% url 'userPage' units.id %}" >
                             {% if units.profileImage %}
                                   <img id="profileImage"  src={{units.profileImage.url}} alt='image' height="100px" width="100px">
                             {% else%}
-                                 <img id="profileImage" src= "{%static '솜솜.jpg'%}" alt='image' height="100px" width="100px"></a>
+                                 <img id="profileImage" src= "{%static '솜솜.jpg'%}" alt='image' height="100px" width="100px">
                             {% endif %}
                     {%endif%}
+                    
                 {% endfor %}
+                
                 {{unit.writer}}</a>
+                </div>
             </span>
             
-        </div>
+        
 
         <br>
                     
@@ -168,6 +179,11 @@
                 </span>
                 &nbsp;
                 <small>{{unit.pub_date}} </small>
+                <span class="del"> {% if user.username == unit.writer %}
+               <a  href="{% url 'deletePost' unit.id%}" onclick="return deletePost()">삭제하기</a>
+                {% elif user.is_staff%}
+                <a  href="{% url 'deletePost' unit.id%}" onclick="return deletePost()">삭제하기</a>
+                {%endif%}</span>
             </div>
 
             <table>
@@ -176,17 +192,13 @@
                     <td width="400px;" height="40px;" class="title2">{{unit.title}}</td>
                 </tr>
                 <tr>
-                    <td colspan="2" class="body2">{{unit.body}}</td>
+                    <td colspan="2" class="body2">{{unit.body|linebreaks}}</td>
                 </tr>
             </table>
             <br>
-            {% if user.username == unit.writer %}
-            <a class="toNext" href="{% url 'deletePost' unit.id%}" onclick="return deletePost()">삭제하기</a>
-            {% elif user.is_staff%}
-            <a class="toNext" href="{% url 'deletePost' unit.id%}" onclick="return deletePost()">삭제하기</a>
-            {%endif%}
+           
     </div>
-</div>  
+</span>  
 {% endfor %}
 
 <br>
