@@ -8,6 +8,7 @@ class Message(models.Model):
     #writer = models.CharField(max_length=50)
     pub_date=models.DateTimeField()
     body=models.TextField()
+    lastMsg = models.DateTimeField()
     
     def __str__(self):
         return self.body

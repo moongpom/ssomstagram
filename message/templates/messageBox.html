@@ -109,6 +109,7 @@
              {% endif%}
              <a  href="{% url 'deleteMessage' unit.id%}"><small><button onclick="return deleteM()">메세지 삭제</button></small></a> 
             </span>
+            {{unit.lastMsg}}
             <a class="toNext" href="{% url 'detailMessage' unit.id%}">
                 <span class="msg">
                 <script>
@@ -126,7 +127,7 @@
                         //   document.write(num+"num++하고나서<br>");
                         document.write("{%endif%}");
                     document.write("{% endfor %}  ");
-                    if(nm==0){ document.write("<info>🎈{{unit.writer}}님이 {{unit.to}}께 대화쪽지를 시작했습니다 </info><small>({{unit.pub_date}})</small>:");
+                    if(nm==0){ document.write("<info>🎈{{unit.writer}}님이 {{unit.to}}님께 대화쪽지를 시작했습니다 </info><small>({{unit.pub_date}})</small>:");
                     document.write("<br><br><b>{{unit.summaryBody|linebreaks }}</b> <br>");}
                     </script></span>
             </a>
