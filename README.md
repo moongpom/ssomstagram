@@ -33,7 +33,10 @@ python manage.py migrate
 pip install django-storages
 pip install boto3
 secrests.json - manage.py있는 폴더에
-
+{
+    "AWS_ACCESS_KEY_ID": "구글 s3키아이디",
+    "AWS_SECRET_ACCESS_KEY": "구글 s3키",
+}
 -------------------------------
 
 python manage.py runserver
