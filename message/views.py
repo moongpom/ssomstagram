@@ -15,7 +15,7 @@ def detailMessage(request, messageId):
 
 def messageBox(request):#메세지함
     userinfo =get_user_model().objects.all()
-    messages=Message.objects.filter( to = request.user).order_by('-id')|Message.objects.filter(   writer = request.user).order_by('-id')
+    messages=Message.objects.filter( to = request.user).order_by('-lastMsg')|Message.objects.filter(   writer = request.user).order_by('-lastMsg')
     paginator = Paginator(messages, 10)
     page = request.GET.get('page')
     message = paginator.get_page(page)
@@ -34,6 +34,7 @@ def newMessage(request,to):
             message.to = to
             message.writer = request.user
             message.pub_date = timezone.now() 
+            message.lastMsg=timezone.now() 
             message.save()
             return redirect("detailMessage",message.id)
     else:
@@ -41,9 +42,14 @@ def newMessage(request,to):
         print(to)
         return render(request, 'newMessage.html', {'form':form,'to':to})
 def replyMessage(request, messageId):
+    message = Message.objects.get(id = messageId)
     if request.method == 'POST':
         form = ReplyForm(request.POST)
         if form.is_valid():
+            message.lastMsg=timezone.now()
+            print(message.lastMsg)
+            print(message.body)
+            message.save()
             reply = form.save(commit=False)
             reply.messageId = Message.objects.get(pk = messageId)
             reply.writer = request.user
