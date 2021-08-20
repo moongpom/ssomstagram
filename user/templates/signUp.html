@@ -4,7 +4,7 @@
 <style>
        </style>
 <h1 >회원가입</h1>
-<form  action="{% url 'signUp' %} " method="post" >
+<form  action="{% url 'signUp' %} " method="post" enctype="multipart/form-data">
     {%csrf_token%}
     <table>
     {{form.as_table}}

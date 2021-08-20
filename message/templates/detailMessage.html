@@ -31,6 +31,14 @@
             font-weight: 900;
             font-size: 18px;
         }
+        .send{
+            position: relative;
+            left: 100px;
+        }
+        .receive{
+            position: relative;
+            left: -100px;
+        }
     </style><br><br>
     
     <div id="unit" class="msg">
@@ -60,13 +68,25 @@
     <hr>
     <br>
 
-    <div>
+    <div> 
         {% for reply in replys %}
-        <div id="unit"> 
-        <b><name>{{reply.writer}}</name>님이  {{reply.pub_date}} 에 보냄</b>
-        <br><br>
-        {{reply.body}}
-        <br></div>
+                
+            
+            {% if reply.writer == user %}
+                <div id="unit" class="send"> 
+                    <b><name>내가</name>  {{reply.pub_date}} 에 보냄</b>
+                    <br><br>
+                    {{reply.body}}
+                    <br>
+                </div>
+            {% else%}
+                <div id="unit" class="receive"> 
+                    <b><name>{{reply.writer}}</name>님이  {{reply.pub_date}} 에 보냄</b>
+                    <br><br>
+                    {{reply.body}}
+                    <br>
+                </div> 
+            {%endif%}
         {% endfor %}
         <br>
     </div> 

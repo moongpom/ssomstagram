@@ -39,6 +39,8 @@
             <h5>with  <b>{{unit.to}}</b></h5>
             {% elif unit.writer != user.username %}
             <h5>with  <b>{{unit.writer}}</b></h5>
+            {% else %}
+            <h5>with  <b>{{user.username}}</b></h5>
             {% endif%}
         </a>
     </div>
