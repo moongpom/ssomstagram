@@ -20,8 +20,8 @@ def login_view(request):
             user = authenticate(request=request,username=username,password=password)
             if user is not None:
                 login(request,user)
-
         return redirect("index")
+       # return redirect("userPage",request.user)
     else:
         form = AuthenticationForm()
         return render(request,'login.html',{'form':form})
@@ -38,6 +38,11 @@ def register_view(request):
             user=form.save(commit=False)#얘는 commit없음
             #user.profileImage = request.FILES['profileImage']
             user.save()
+            print(user.introduce)
+            print(user.profileImage)
+            print("회원가입성공")
+        else:
+            print("회원가입안됨")
         return  redirect('index')
     else:
         form = SignUpForm()

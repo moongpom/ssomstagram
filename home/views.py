@@ -22,9 +22,13 @@ def index(request):
     return render(request,"index.html",{'postList':Posts,'userinfo':userinfo})
 
 def userPage(request,goTo):
+    #print( writer )
+    print(Post.writer)
+    print( goTo)
+    
     posts=Post.objects.filter( writer = goTo).order_by('-id')
-    userinfo =get_user_model().objects.all()
-    #print(userinfo)
+    userinfo =get_user_model().objects.filter( id = goTo)
+    #print( userinfo.introduce)
     print(posts)
     return render(request,"userPage.html",{ 'posts': posts,'goTo':goTo,'userinfo':userinfo})
 

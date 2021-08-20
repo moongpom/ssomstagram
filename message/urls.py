@@ -8,4 +8,5 @@ urlpatterns = [
    path('messageBox/',messageBox,name='messageBox'),
    path('detailMessage/<str:messageId>',detailMessage,name='detailMessage'),
    path('deleteMessage/<str:messageId>',deleteMessage,name='deleteMessage'),
+   path('deleteReply/<str:replyId>/<str:messageId>',deleteReply,name='deleteReply'),
 ]

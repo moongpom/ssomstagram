@@ -85,7 +85,7 @@
             <br>
             {% for units in userinfo %}
             
-                {% if units.username == goTo%}
+                {% if units.id == goTo%}
                 <div class="container">
                     <div class="profile">
                         {% if units.profileImage %}
@@ -101,14 +101,14 @@
                    <br><br>       
 
                    {% if user.is_authenticated %}
-                   <button><a href="{% url 'newMessage' goTo %}" > 쪽지보내기</a></button>
+                   <button><a href="{% url 'newMessage' units.username %}" > 쪽지보내기</a></button>
                    {% else %}
                    <button><a href='#' onclick="authMessage()" > 쪽지보내기</a></button>
                    {%endif%}
 
-                   {% if goTo == user.username%}
+                   {% if goTo == user.id%}
                    <button>
-                       <a class="toNext" href="{% url 'editMypage' user.username%}">프로필수정하기</a>
+                       <a class="toNext" href="{% url 'editMypage' user.id%}">프로필수정하기</a>
                     </button>
                     {%endif%}
 
@@ -132,10 +132,10 @@
                     {% if unit.image %}
                     <img src={{unit.image.url}} alt='image' height="100px"width="100px">
                      
-                    {% endif %}<br>
+                    {% endif %}
                     제목 | {{unit.title}}<br> 
                     작성자 | {{unit.writer}}<br>
-                    글 |  {{unit.summary}}<br>
+                    글 |  {{unit.body}}<br>
                     {% if user.username == unit.writer %}
                     <a class="toNext" href="{% url 'deletePost' unit.id%}" onclick="return deletePost()">삭제하기</a>
                     {% elif user.is_staff%}

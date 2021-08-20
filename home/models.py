@@ -3,7 +3,7 @@ from django.conf import settings
 # Create your models here.
 class Post(models.Model):
     title = models.CharField(max_length=50) #CharField: 제한있는 문자열
-    writer=models.CharField(max_length=50)    
+    writer = models.ForeignKey('user.SomUser', on_delete=models.CASCADE, null=False)  
     pub_date=models.DateTimeField()
     body=models.TextField()
     image = models.ImageField(upload_to="mediaForm/",blank=False,null=False)
@@ -14,4 +14,4 @@ class Post(models.Model):
         return self.title
 
     def summary(self):
-        return self.body[:80]
+        return self.body[:30]
