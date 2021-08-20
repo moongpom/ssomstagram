@@ -179,7 +179,7 @@
                 </span>
                 &nbsp;
                 <small>{{unit.pub_date}} </small>
-                <span class="del"> {% if user.username == unit.writer %}
+                <span class="del"> {% if user == unit.writer %}
                <a  href="{% url 'deletePost' unit.id%}" onclick="return deletePost()">삭제하기</a>
                 {% elif user.is_staff%}
                 <a  href="{% url 'deletePost' unit.id%}" onclick="return deletePost()">삭제하기</a>

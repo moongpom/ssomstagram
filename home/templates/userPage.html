@@ -65,18 +65,26 @@
      <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
      <script>
        
-         function OnMouseIn(elem) 
+        function OnMouseIn(elem) 
            {
                elem.style.color = "olive";
            }
-       function OnMouseOut(elem) 
+        function OnMouseOut(elem) 
            {
                elem.style.color= "rgb(179, 108, 108)";
            }
 
-           function authMessage(){
-                       alert("쪽지는 로그인 하신 뒤 이용가능한 서비스 입니다");
-                  }
+        function authMessage()
+            {
+                alert("쪽지는 로그인 하신 뒤 이용가능한 서비스 입니다");
+            }
+
+        function deletePost() 
+            {
+                var ret = confirm("게시물을 삭제합니다.");
+                return ret;
+            }
+            
          </script>
    
    <br><br>
@@ -136,7 +144,7 @@
                     제목 | {{unit.title}}<br> 
                     작성자 | {{unit.writer}}<br>
                     글 |  {{unit.body}}<br>
-                    {% if user.username == unit.writer %}
+                    {% if user == unit.writer %}
                     <a class="toNext" href="{% url 'deletePost' unit.id%}" onclick="return deletePost()">삭제하기</a>
                     {% elif user.is_staff%}
                     <a class="toNext" href="{% url 'deletePost' unit.id%}" onclick="return deletePost()">삭제하기</a>
